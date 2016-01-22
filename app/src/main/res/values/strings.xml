@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">AppliLauncher</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="launch">Lancer mon application</string>
+    <string name="call">Moman help</string>
+    <string name="unknow">Bouton inconnu</string>
+    <string name="web">Site internet de génie</string>
+    <string name="launch_calculator">Calculette</string>
+
+
+    <!-- String pour la calculette-->
+    <string name="title_activity_calculette">Calculette</string>
+    <string name="result">Résultat</string>
+    <string name="plus">+</string>
+    <string name="value1">Valeur 1</string>
+    <string name="value2">Valeur 2</string>
+    <string name="button_efface">Effacer</string>
+</resources>
