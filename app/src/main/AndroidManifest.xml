@@ -21,10 +21,10 @@
         <activity
                 android:name=".Calculette"
                 android:label="@string/title_activity_calculette"
-                android:parentActivityName=".AppliLauncher" >
+                android:parentActivityName=".AppList" >
                 <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="tp2.info.iut.acy.fr.applilauncher.AppliLauncher" />
+                    android:value="tp2.info.iut.acy.fr.applilauncher.AppList" />
                 <intent-filter>
                     <action
                         android:name="android.intent.action.MAIN"></action>
