@@ -5,6 +5,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +17,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,6 +27,10 @@ import java.util.HashMap;
 public class AppList extends Activity {
 
     private ListView _activityList;
+
+    // variable statique pour différencier les réponses
+    static int PRENDRE_PHOTO_FLAG = 1;
+    static int PRENDRE_VIDEO_FLAG = 2;
 
 
     @Override
@@ -40,6 +47,7 @@ public class AppList extends Activity {
         appItemList.add(fillHashMap("Calculette", "Apprendre à compter", String.valueOf((R.drawable.ic_calculator))));
         appItemList.add(fillHashMap("Help", "Appeler Moman", String.valueOf((R.drawable.ic_phone))));
         appItemList.add(fillHashMap("Web", "Découvrir un site incroyable !", String.valueOf((R.drawable.ic_web))));
+        appItemList.add(fillHashMap("Photo", "Prendre une photo", String.valueOf((R.drawable.ic_photo))));
 
         // Création d'un SimpleAdapter qui met en correspondance les items présents dans la list avec ceux de la vue
         SimpleAdapter itemsAdapter = new SimpleAdapter(this.getBaseContext(), appItemList, R.layout.app_item,
@@ -55,6 +63,8 @@ public class AppList extends Activity {
                 // Debug la position de l'item cliqué
                 Log.d("position",String.valueOf(position));
 
+
+                // position contient la position de l'item dans la ListView en commencant à 0
                 switch (position){
                     // Item "Caclulette" cliqué sur le ListView
                     case 0:
@@ -87,6 +97,13 @@ public class AppList extends Activity {
                         startActivity(i);
                         break;
 
+                    // Item "Photo" cliqué sur le ListView
+                    case 3:
+                        Log.d(" bouton appuyé ", "photo");
+                        Toast.makeText(getApplicationContext(), "Lancement de l'appareil photo", Toast.LENGTH_SHORT).show();
+                        takeAPicture();
+                        break;
+
                 }
 
             }
@@ -103,6 +120,53 @@ public class AppList extends Activity {
         item.put("TextAppSummary", summary);
         item.put("App_icon", icon);
         return item;
+    }
+
+    // méthode qui prend une photo
+    private void takeAPicture(){
+        // on crée un Intent d'appel au lancement de la fonctionnalite photo de l appareil
+        Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // ajouter des information à l'Intent: ou enregistrer la photo
+        File lieuSauvegarde = new File(Environment.getExternalStorageDirectory(), "AppliLauncher.jpg");
+        Uri fichierDeSortie = Uri.fromFile(lieuSauvegarde);
+
+        // mise à jour du nom de fichier de sauvegarde
+        String filepath_last = fichierDeSortie.toString();
+
+        // on ajoute a l intent des informations sur le fichier d enregistrement de l image
+        photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fichierDeSortie);
+
+        /* lancement de l intent... avec attente de reponse.... lorsque la reponse est disponible
+        * la methode qui suit: 'onActivityResult est appelee automatiquement
+        */
+        startActivityForResult(photoIntent, PRENDRE_PHOTO_FLAG);
+    }
+
+    // Pour recuperer la photo ou la video selon le resultCode
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+
+        // debug de la méthode
+        Log.d("ActivityResult","Appelé");
+        Log.d("Result code",String.valueOf(requestCode));
+
+        // si le code résultat correspond au flag de la photo
+        if(requestCode == PRENDRE_PHOTO_FLAG){
+
+            Toast.makeText(getApplicationContext(), "Photo prise", Toast.LENGTH_SHORT).show();
+            if (data == null) {
+                // vérifie l'existance et le contenu de l'Intent de retour data
+                Toast.makeText(getApplicationContext(), "Donnée impossible à recuperer", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Donnée recuperé", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if(requestCode == PRENDRE_VIDEO_FLAG){
+
+            Toast.makeText(getApplicationContext(), "Vidéo prise", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
 }
