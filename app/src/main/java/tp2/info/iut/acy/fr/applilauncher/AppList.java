@@ -128,14 +128,14 @@ public class AppList extends Activity {
         Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         // ajouter des information à l'Intent: ou enregistrer la photo
-        File lieuSauvegarde = new File(Environment.getExternalStorageDirectory(), "AppliLauncher.jpg");
-        Uri fichierDeSortie = Uri.fromFile(lieuSauvegarde);
-
-        // mise à jour du nom de fichier de sauvegarde
-        String filepath_last = fichierDeSortie.toString();
-
-        // on ajoute a l intent des informations sur le fichier d enregistrement de l image
-        photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fichierDeSortie);
+//        File lieuSauvegarde = new File(Environment.getExternalStorageDirectory(), "AppliLauncher.jpg");
+//        Uri fichierDeSortie = Uri.fromFile(lieuSauvegarde);
+//
+//        // mise à jour du nom de fichier de sauvegarde
+//        String filepath_last = fichierDeSortie.toString();
+//
+//        // on ajoute a l intent des informations sur le fichier d enregistrement de l image
+//        photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fichierDeSortie);
 
         /* lancement de l intent... avec attente de reponse.... lorsque la reponse est disponible
         * la methode qui suit: 'onActivityResult est appelee automatiquement
@@ -145,6 +145,7 @@ public class AppList extends Activity {
 
     // Pour recuperer la photo ou la video selon le resultCode
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
 
         // debug de la méthode
         Log.d("ActivityResult","Appelé");
@@ -153,13 +154,33 @@ public class AppList extends Activity {
         // si le code résultat correspond au flag de la photo
         if(requestCode == PRENDRE_PHOTO_FLAG){
 
-            Toast.makeText(getApplicationContext(), "Photo prise", Toast.LENGTH_SHORT).show();
-            if (data == null) {
-                // vérifie l'existance et le contenu de l'Intent de retour data
-                Toast.makeText(getApplicationContext(), "Donnée impossible à recuperer", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Donnée recuperé", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Photo prise", Toast.LENGTH_SHORT).show();
+//            if (data == null) {
+//                // vérifie l'existance et le contenu de l'Intent de retour data
+//                Toast.makeText(getApplicationContext(), "Donnée impossible à recuperer", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(getApplicationContext(), "Donnée recuperé", Toast.LENGTH_SHORT).show();
+//            }
+
+//            if (resultCode == RESULT_OK) {
+//                Toast.makeText(this, "Photo saved to:\n", Toast.LENGTH_LONG).show();
+//            } else if (resultCode == RESULT_CANCELED) {
+//                Toast.makeText(this, "Photo recording cancelled.",
+//                        Toast.LENGTH_LONG).show();
+//            } else {
+//                Toast.makeText(this, "Failed to prendre photo",
+//                        Toast.LENGTH_LONG).show();
+//            }
+            if (resultCode == RESULT_OK) {
+                if(data != null){
+                    Toast.makeText(this, "Video saved to:\n" +
+                            data.getData(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Fromage" +
+                            data.getData(), Toast.LENGTH_LONG).show();
+                }
             }
+
 
         } else if(requestCode == PRENDRE_VIDEO_FLAG){
 
