@@ -83,7 +83,7 @@ public class AppList extends Activity {
                         // lancer l'appel
                         Log.d(" bouton appuyé ", "appel");
                         Toast.makeText(getApplicationContext(), "Appel", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "06 85 21 45 06"));
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "06 00 00 00 00"));
                         startActivity(intent);
                         break;
 
