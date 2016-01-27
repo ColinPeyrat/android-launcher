@@ -59,7 +59,7 @@ public class AppliLauncher extends Activity implements OnClickListener {
                 Toast.makeText(getApplicationContext(), "Démarrage", Toast.LENGTH_SHORT).show();
                 break;
 
-            // lorsque le bouton d'appel du site est cliqué
+            // lorsque le   bouton d'appel du site est cliqué
             case R.id.call:
                 // lancer l'appel
                 Log.d(" bouton appuyé ", "appel");

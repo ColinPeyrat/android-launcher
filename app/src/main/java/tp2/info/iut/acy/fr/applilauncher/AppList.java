@@ -48,6 +48,7 @@ public class AppList extends Activity {
         appItemList.add(fillHashMap("Help", "Appeler Moman", String.valueOf((R.drawable.ic_phone))));
         appItemList.add(fillHashMap("Web", "Découvrir un site incroyable !", String.valueOf((R.drawable.ic_web))));
         appItemList.add(fillHashMap("Photo", "Prendre une photo", String.valueOf((R.drawable.ic_photo))));
+        appItemList.add(fillHashMap("Vidéo", "Filmez les plus beaux moments", String.valueOf((R.drawable.ic_camera))));
 
         // Création d'un SimpleAdapter qui met en correspondance les items présents dans la list avec ceux de la vue
         SimpleAdapter itemsAdapter = new SimpleAdapter(this.getBaseContext(), appItemList, R.layout.app_item,
@@ -63,7 +64,6 @@ public class AppList extends Activity {
                 // Debug la position de l'item cliqué
                 Log.d("position",String.valueOf(position));
 
-
                 // position contient la position de l'item dans la ListView en commencant à 0
                 switch (position){
                     // Item "Caclulette" cliqué sur le ListView
@@ -77,8 +77,8 @@ public class AppList extends Activity {
                             Toast.makeText(getApplicationContext(), "Activité non trouvée", Toast.LENGTH_SHORT).show();
                         }
                         break;
-                    // Item "Help" cliqué sur le ListView
 
+                    // Item "Help" cliqué sur le ListView
                     case 1:
                         // lancer l'appel
                         Log.d(" bouton appuyé ", "appel");
@@ -104,6 +104,13 @@ public class AppList extends Activity {
                         takeAPicture();
                         break;
 
+                    // Item "Vidéo" cliqué sur le ListView
+                    case 4:
+                        Log.d(" bouton appuyé ", "vidéo");
+                        Toast.makeText(getApplicationContext(), "Lancement de la caméra", Toast.LENGTH_SHORT).show();
+                        takeAMovie();
+                        break;
+
                 }
 
             }
@@ -127,20 +134,32 @@ public class AppList extends Activity {
         // on crée un Intent d'appel au lancement de la fonctionnalite photo de l appareil
         Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+        // Obligé de commenter ces lignes sinon le .putExtra rend le data == null
         // ajouter des information à l'Intent: ou enregistrer la photo
-//        File lieuSauvegarde = new File(Environment.getExternalStorageDirectory(), "AppliLauncher.jpg");
-//        Uri fichierDeSortie = Uri.fromFile(lieuSauvegarde);
-//
-//        // mise à jour du nom de fichier de sauvegarde
-//        String filepath_last = fichierDeSortie.toString();
-//
-//        // on ajoute a l intent des informations sur le fichier d enregistrement de l image
-//        photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fichierDeSortie);
+        // File lieuSauvegarde = new File(Environment.getExternalStorageDirectory(), "AppliLauncher.jpg");
+        // Uri fichierDeSortie = Uri.fromFile(lieuSauvegarde);
+
+        // mise à jour du nom de fichier de sauvegarde
+        // String filepath_last = fichierDeSortie.toString();
+
+        // on ajoute a l intent des informations sur le fichier d enregistrement de l image
+        // photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fichierDeSortie);
 
         /* lancement de l intent... avec attente de reponse.... lorsque la reponse est disponible
         * la methode qui suit: 'onActivityResult est appelee automatiquement
         */
         startActivityForResult(photoIntent, PRENDRE_PHOTO_FLAG);
+    }
+    // méthode qui prend une vidéo
+    private void takeAMovie(){
+
+        // on crée un Intent d'appel au lancement de la fonctionnalite photo de l appareil
+        Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        /* lancement de l intent... avec attente de reponse.... lorsque la reponse est disponible
+        * la methode qui suit: 'onActivityResult est appelee automatiquement
+        */
+        startActivityForResult(photoIntent, PRENDRE_VIDEO_FLAG);
     }
 
     // Pour recuperer la photo ou la video selon le resultCode
@@ -154,37 +173,30 @@ public class AppList extends Activity {
         // si le code résultat correspond au flag de la photo
         if(requestCode == PRENDRE_PHOTO_FLAG){
 
-//            Toast.makeText(getApplicationContext(), "Photo prise", Toast.LENGTH_SHORT).show();
-//            if (data == null) {
-//                // vérifie l'existance et le contenu de l'Intent de retour data
-//                Toast.makeText(getApplicationContext(), "Donnée impossible à recuperer", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Donnée recuperé", Toast.LENGTH_SHORT).show();
-//            }
-
-//            if (resultCode == RESULT_OK) {
-//                Toast.makeText(this, "Photo saved to:\n", Toast.LENGTH_LONG).show();
-//            } else if (resultCode == RESULT_CANCELED) {
-//                Toast.makeText(this, "Photo recording cancelled.",
-//                        Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(this, "Failed to prendre photo",
-//                        Toast.LENGTH_LONG).show();
-//            }
+            // si la méthode indique que tout s'est bien deroulé
             if (resultCode == RESULT_OK) {
                 if(data != null){
-                    Toast.makeText(this, "Video saved to:\n" +
+                    Toast.makeText(this, "Photo sauvgardé à:\n" +
                             data.getData(), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this, "Fromage" +
-                            data.getData(), Toast.LENGTH_LONG).show();
-                }
+                    Toast.makeText(this, "Impossible de sauvgarder la photo", Toast.LENGTH_LONG).show();
             }
+        }
 
 
         } else if(requestCode == PRENDRE_VIDEO_FLAG){
 
             Toast.makeText(getApplicationContext(), "Vidéo prise", Toast.LENGTH_SHORT).show();
+
+            // si la méthode indique que tout s'est bien deroulé
+            if (resultCode == RESULT_OK) {
+                if(data != null){
+                    Toast.makeText(this, "Vidéo sauvgardé à:\n" +
+                            data.getData(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Impossible de sauvgarder la vidéo", Toast.LENGTH_LONG).show();
+                }
+            }
 
         }
 
